@@ -139,12 +139,12 @@
             "properties": {
             "mode": "Incremental",
             "templateLink": {
-               "uri": "[uri(parameters('_artifactsLocation'), concat('arm/nestedtemplates/arm-oraclelinux-wls-cluster/src/main/arm/', variables('name_cluster_template')))]",
+               "uri": "[uri(parameters('_artifactsLocation'), concat('arm/nestedtemplates/configured-cluster/arm/', variables('name_cluster_template')))]",
                "contentVersion": "1.0.0.0"
             },
             "parameters": {
                "_artifactsLocation": {
-                  "value": "[concat(parameters('_artifactsLocation'), '/nestedtemplates/arm-oraclelinux-wls-cluster/src/main/')]"
+                  "value": "[concat(parameters('_artifactsLocation'), '/nestedtemplates/configured-cluster/')]"
                },
                "location": {
                   "value": "[parameters('location')]"
@@ -193,12 +193,12 @@
             "properties": {
             "mode": "Incremental",
             "templateLink": {
-               "uri": "[uri(parameters('_artifactsLocation'), concat('arm/nestedtemplates/arm-oraclelinux-wls-admin/src/main/arm/', variables('name_single_node_template')))]",
+               "uri": "[uri(parameters('_artifactsLocation'), concat('arm/nestedtemplates/single-node/arm/', variables('name_single_node_template')))]",
                "contentVersion": "1.0.0.0"
             },
             "parameters": {
                "_artifactsLocation": {
-                  "value": "[concat(parameters('_artifactsLocation'), '/nestedtemplates/arm-oraclelinux-wls-admin/src/main/')]"
+                  "value": "[concat(parameters('_artifactsLocation'), '/nestedtemplates/single-node/')]"
                },
                "location": {
                   "value": "[parameters('location')]"

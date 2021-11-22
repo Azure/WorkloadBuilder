@@ -1,0 +1,181 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "_artifactsLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+            },
+            "defaultValue": "[deployment().properties.templateLink.uri]"
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+            },
+            "defaultValue": ""
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "User name for the Virtual Machine."
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
+            }
+        },
+        "migrationMode": {
+            "type": "string",
+            "defaultValue": "Cluster",
+            "metadata": {
+                "description": "Migration mode, SingleNode or Cluster"
+            }
+        },
+        "adminVmSizeSelect": {
+            "type": "string",
+            "defaultValue": "Standard_D2_v3",
+            "metadata": {
+                "description": "Select appropriate VM Size as per requirement (Standard_A1, Standard_A2, Standard_A3, Standard_A4) for admin node"
+            }
+        },
+        "managedVmSizeSelect": {
+            "type": "string",
+            "defaultValue": "Standard_D2_v3",
+            "metadata": {
+                "description": "Select appropriate VM Size as per requirement (Standard_A1, Standard_A2, Standard_A3, Standard_A4) for managed node"
+            }
+        },
+        "numberOfInstances": {
+            "type": "string",
+            "allowedValues": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "metadata": {
+                "description": "Number of VMs to deploy, limit 5 since this sample is using a single storage account"
+            }
+        },
+        "linuxOSVersion": {
+            "type": "string",
+            "defaultValue": "7.6",
+            "allowedValues": [
+                "7.4",
+                "7.6"
+            ],
+            "metadata": {
+                "description": "Select appropriate Oracle Linux version"
+            }
+        },
+        "identity": {
+            "type": "string",
+            "metadata": {
+                "description": "User-assigned managed identity granted with contributor role of the same subscription"
+            }
+        },
+        "acceptOTNLicenseAgreement": {
+            "type": "string",
+            "metadata": {
+                "description": "Do you agree to provide OTN credentials to accept OTN License Agreement? Enter Y or y to agree, else N or n"
+            }
+        },
+        "otnCredentials": {
+            "type": "string",
+            "metadata": {
+                "description": "Username and password for your Oracle Technology Network account"
+            }
+        },
+        "migrationStorage": {
+            "type": "string",
+            "metadata": {
+                "description": "source environment files"
+            }
+        },
+        "sourceEnv": {
+            "type": "string",
+            "metadata": {
+                "description": "source environment details"
+            }
+        }
+    },
+    "variables": {
+        "main_template": "mainTemplate.json"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "wrap-main-prameters",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[uri(parameters('_artifactsLocation'), concat('arm/', variables('main_template')))]",
+                    "contentVersion": "1.0.0.0",
+                    "queryString": "[parameters('_artifactsLocationSasToken')]"
+                },
+                "parameters": {
+                    "_artifactsLocation": {
+                        "value": "[parameters('_artifactsLocation')]"
+                    },
+                    "_artifactsLocationSasToken": {
+                        "value": "[parameters('_artifactsLocationSasToken')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    },
+                    "migrationMode": {
+                        "value": "[parameters('migrationMode')]"
+                    },
+                    "adminVmSizeSelect": {
+                        "value": "[parameters('adminVmSizeSelect')]"
+                    },
+                    "managedVmSizeSelect": {
+                        "value": "[parameters('managedVmSizeSelect')]"
+                    },
+                    "numberOfInstances": {
+                        "value": "[int(parameters('numberOfInstances'))]"
+                    },
+                    "linuxOSVersion": {
+                        "value": "[parameters('linuxOSVersion')]"
+                    },
+                    "identity": {
+                        "value": "[json(parameters('identity'))]"
+                    },
+                    "acceptOTNLicenseAgreement": {
+                        "value": "[parameters('acceptOTNLicenseAgreement')]"
+                    },
+                    "otnCredentials": {
+                        "value": "[json(parameters('otnCredentials'))]"
+                    },
+                    "migrationStorage": {
+                        "value": "[json(parameters('migrationStorage'))]"
+                    },
+                    "sourceEnv": {
+                        "value": "[json(parameters('sourceEnv'))]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
