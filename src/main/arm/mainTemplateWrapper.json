@@ -9,13 +9,6 @@
             },
             "defaultValue": "https://raw.githubusercontent.com/Azure/WorkloadBuilder/main/src/main/arm"
         },
-        "_artifactsLocationSasToken": {
-            "type": "securestring",
-            "metadata": {
-                "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
-            },
-            "defaultValue": ""
-        },
         "location": {
             "type": "string",
             "defaultValue": "[resourceGroup().location]",
@@ -123,15 +116,11 @@
                 "mode": "Incremental",
                 "templateLink": {
                     "uri": "[uri(parameters('_artifactsLocation'), concat('arm/', variables('main_template')))]",
-                    "contentVersion": "1.0.0.0",
-                    "queryString": "[parameters('_artifactsLocationSasToken')]"
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "_artifactsLocation": {
                         "value": "[parameters('_artifactsLocation')]"
-                    },
-                    "_artifactsLocationSasToken": {
-                        "value": "[parameters('_artifactsLocationSasToken')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"

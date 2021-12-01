@@ -9,13 +9,6 @@
             },
             "defaultValue": "[deployment().properties.templateLink.uri]"
         },
-        "_artifactsLocationSasToken": {
-            "type": "securestring",
-            "metadata": {
-                "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
-            },
-            "defaultValue": ""
-        },
         "guidValue": {
             "type": "string",
             "defaultValue": "[newGuid()]"
@@ -394,11 +387,11 @@
             "properties": {
                 "AzCliVersion": "2.15.0",
                 "arguments": "[concat(parameters('acceptOTNLicenseAgreement'),' ',replace(string(parameters('otnCredentials')), '\"', '\\\"'),' ',replace(string(parameters('migrationStorage')), '\"', '\\\"'),' ',replace(string(parameters('sourceEnv')), '\"', '\\\"'),' ',variables('const_adminVMName'),' ',variables('const_managedVMPrefix'),' ',parameters('numberOfInstances'),' ',variables('const_scriptLocation'),' ',resourceGroup().name)]",
-                "primaryScriptUri": "[uri(parameters('_artifactsLocation'), concat('scripts/', variables('migrationScript'), parameters('_artifactsLocationSasToken')))]",
+                "primaryScriptUri": "[uri(parameters('_artifactsLocation'), concat('scripts/', variables('migrationScript')))]",
                 "supportingScriptsUris": [
-                    "[uri(parameters('_artifactsLocation'), concat('scripts/', variables('adminMigrationScript'), parameters('_artifactsLocationSasToken')))]",
-                    "[uri(parameters('_artifactsLocation'), concat('scripts/', variables('managedMigrationScript'), parameters('_artifactsLocationSasToken')))]",
-                    "[uri(parameters('_artifactsLocation'), concat('scripts/', variables('managedStartScript'), parameters('_artifactsLocationSasToken')))]"
+                    "[uri(parameters('_artifactsLocation'), concat('scripts/', variables('adminMigrationScript')))]",
+                    "[uri(parameters('_artifactsLocation'), concat('scripts/', variables('managedMigrationScript')))]",
+                    "[uri(parameters('_artifactsLocation'), concat('scripts/', variables('managedStartScript')))]"
                 ],
                 "cleanupPreference": "OnSuccess",
                 "retentionInterval": "P1D"
