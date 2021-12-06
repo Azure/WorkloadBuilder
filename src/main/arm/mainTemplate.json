@@ -22,10 +22,10 @@
                 "description": "User name for the Virtual Machine."
             }
         },
-        "adminPassword": {
-            "type": "securestring",
+        "adminSshPublicKey": {
+            "type": "string",
             "metadata": {
-                "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
+                "description": "SSH Key for the Virtual Machine."
             }
         },
         "migrationMode": {
@@ -145,8 +145,8 @@
                "adminUsername": {
                   "value": "[parameters('adminUsername')]"
                },
-               "adminPassword": {
-                  "value": "[parameters('adminPassword')]"
+               "adminSshPublicKey": {
+                  "value": "[parameters('adminSshPublicKey')]"
                },
                "adminVmSizeSelect": {
                   "value": "[parameters('adminVmSizeSelect')]"
@@ -199,8 +199,8 @@
                "adminUsername": {
                   "value": "[parameters('adminUsername')]"
                },
-               "adminPassword": {
-                  "value": "[parameters('adminPassword')]"
+               "adminSshPublicKey": {
+                  "value": "[parameters('adminSshPublicKey')]"
                },
                "vmSizeSelect": {
                   "value": "[parameters('adminVmSizeSelect')]"
