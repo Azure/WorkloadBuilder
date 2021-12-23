@@ -180,7 +180,7 @@ function installUtilities() {
 #download jdk from OTN
 function downloadJDK() {
     echo "Downloading jdk from OTN..."
-    if [ $jdkVersion == 11 ]; then
+    if [ $jdkVersion == "11.0.9" ]; then
         jdk_file_name="jdk-11.0.9_linux-x64_bin.tar.gz"
         jdk_download_link="https://download.oracle.com/otn/java/jdk/11.0.9+7/eec35ebefb3f4133bd045b891f05db94/jdk-11.0.9_linux-x64_bin.tar.gz"
     else
