@@ -41,7 +41,7 @@ function createInputFile() {
     ## Concat managed node
     j=0
     for ((i = 0; i < numberOfInstances; i++)); do
-        srcHostname=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .hostname")
+        srcHostname=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .hostName")
         if [ "$srcHostname" != "$ADMIN_SOURCE_HOST_NAME" ]; then
             targetHostname=$(echo $managedNodeHostnames | jq -r ".[$j]")
             input_file="$input_file"$'\n'${srcHostname}=${targetHostname}
@@ -55,7 +55,7 @@ function createInputFile() {
 function configureNodes() {
     # configure admin first
     for ((i = 0; i < numberOfInstances; i++)); do
-        srcHostname=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .hostname")
+        srcHostname=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .hostName")
         if [ "$srcHostname" == "$ADMIN_SOURCE_HOST_NAME" ]; then
             ADMIN_TARGET_BINARY_FILE_NAME=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .ofmBinaryFileName")
             ADMIN_TARGET_DOMAIN_FILE_NAME=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .domainZipFileName")
@@ -76,7 +76,7 @@ function configureNodes() {
     j=0
     # configure managed node after
     for ((i = 0; i < numberOfInstances; i++)); do
-        srcHostname=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .hostname")
+        srcHostname=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .hostName")
         if [ "$srcHostname" != "$ADMIN_SOURCE_HOST_NAME" ]; then
             MANAGED_TARGET_BINARY_FILE_NAME=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .ofmBinaryFileName")
             MANAGED_TARGET_DOMAIN_FILE_NAME=$(echo $sourceEnv | jq ".nodeInfo" | jq -r ".[$i] | .domainZipFileName")
@@ -94,43 +94,6 @@ function configureNodes() {
         fi
     done
 }
-
-# function configureAdminNode() {
-#     ADMIN_TARGET_BINARY_FILE_NAME=$(echo $sourceEnv | jq -r '.adminNodeInfo.ofmBinaryFileName')
-#     ADMIN_TARGET_DOMAIN_FILE_NAME=$(echo $sourceEnv | jq -r '.adminNodeInfo.domainZipFileName')
-#     az vm extension set --name CustomScript \
-#         --resource-group ${resourceGroupName} \
-#         --vm-name ${adminVMName} \
-#         --publisher Microsoft.Azure.Extensions \
-#         --version 2.0 \
-#         --settings "{\"fileUris\": [\"${scriptLocation}adminMigration.sh\"]}" \
-#         --protected-settings "{\"commandToExecute\":\"bash adminMigration.sh  ${acceptOTNLicenseAgreement} ${otnusername} ${otnpassword} ${jdkVersion} ${JAVA_HOME} ${ADMIN_TARGET_BINARY_FILE_NAME} ${ADMIN_TARGET_DOMAIN_FILE_NAME} ${ORACLE_HOME} ${DOMAIN_HOME} ${AZ_ACCOUNT_NAME} ${AZ_BLOB_CONTAINER} ${az_sas_token_base64} ${DOMAIN_ADMIN_USERNAME} ${DOMAIN_ADMIN_PASSWORD} ${adminVMName} ${input_file_base64}\"}"
-#     # error exception
-#     echo $?
-#     echo "admin VM extension execution completed"
-# }
-
-# function configureManagedNode() {
-#     managedNodeHostnames=$(az vm list --resource-group ${resourceGroupName} --query "[?name!='${adminVMName}'].name")
-
-#     echo "$managedNodeHostnames"
-
-#     for ((i = 0; i < numberOfInstances - 1; i++)); do
-#         srcHostname=$(echo $sourceEnv | jq ".managedNodeInfo" | jq -r ".[$i] | .hostname")
-#         targetHostname=$(echo $managedNodeHostnames | jq -r ".[$i]")
-#         MANAGED_TARGET_BINARY_FILE_NAME=$(echo $sourceEnv | jq ".managedNodeInfo" | jq -r ".[$i] | .ofmBinaryFileName")
-#         MANAGED_TARGET_DOMAIN_FILE_NAME=$(echo $sourceEnv | jq ".managedNodeInfo" | jq -r ".[$i] | .domainZipFileName")
-#         az vm extension set --name CustomScript \
-#             --resource-group ${resourceGroupName} \
-#             --vm-name ${targetHostname} \
-#             --publisher Microsoft.Azure.Extensions \
-#             --version 2.0 \
-#             --settings "{\"fileUris\": [\"${scriptLocation}managedMigration.sh\"]}" \
-#             --protected-settings "{\"commandToExecute\":\"bash managedMigration.sh  ${acceptOTNLicenseAgreement} ${otnusername} ${otnpassword} ${jdkVersion} ${JAVA_HOME} ${MANAGED_TARGET_BINARY_FILE_NAME} ${MANAGED_TARGET_DOMAIN_FILE_NAME} ${ORACLE_HOME} ${DOMAIN_HOME} ${AZ_ACCOUNT_NAME} ${AZ_BLOB_CONTAINER} ${az_sas_token_base64} ${DOMAIN_ADMIN_USERNAME} ${DOMAIN_ADMIN_PASSWORD} ${adminVMName} ${targetHostname} ${input_file_base64}\"}"
-#         echo $?
-#         echo "$srcHostname configuration extension execution completed"
-#     done
-# }
 
 function startManagedNode() {
     managedNodeHostnames=$(az vm list --resource-group ${resourceGroupName} --query "[?name!='${adminVMName}'].name")
