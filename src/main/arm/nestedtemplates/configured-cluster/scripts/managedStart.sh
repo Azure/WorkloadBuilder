@@ -10,9 +10,9 @@ export TARGET_HOST_NAME="${3}"
 
 function start_managed() {
     echo "Starting managed server $TARGET_HOST_NAME"
-    if [ ! -d $DOMAIN_HOME/config/config.xml ]; then
+    if [ ! -f $DOMAIN_HOME/config/config.xml ]; then
         echo "config file is missing"
-        if [ ! -d $DOMAIN_HOME/config/config_bootstrap.xml ]; then
+        if [ ! -f $DOMAIN_HOME/config/config_bootstrap.xml ]; then
             echo "config_bootstrap is missing too"
             exit 1
         else
