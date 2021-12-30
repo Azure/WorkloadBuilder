@@ -10,6 +10,10 @@ export TARGET_HOST_NAME="${3}"
 
 function start_managed() {
     echo "Starting managed server $TARGET_HOST_NAME"
+    if [ ! -d $DOMAIN_HOME/config/config.xml ]; then
+        echo "config file is missing"
+        exit 1
+    fi
     sudo chown -R $username:$groupname $DOMAIN_PATH
     runuser -l oracle -c ". $ORACLE_HOME/oracle_common/common/bin/setWlstEnv.sh; java weblogic.WLST $DOMAIN_PATH/start-server.py"
     if [[ $? != 0 ]]; then
