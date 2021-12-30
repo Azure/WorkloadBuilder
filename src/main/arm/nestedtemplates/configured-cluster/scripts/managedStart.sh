@@ -12,7 +12,13 @@ function start_managed() {
     echo "Starting managed server $TARGET_HOST_NAME"
     if [ ! -d $DOMAIN_HOME/config/config.xml ]; then
         echo "config file is missing"
-        exit 1
+        if [ ! -d $DOMAIN_HOME/config/config_bootstrap.xml ]; then
+            echo "config_bootstrap is missing too"
+            exit 1
+        else
+            # make config.xml since it's packed
+            sudo mv ${DOMAIN_HOME}/config/config_bootstrap.xml ${DOMAIN_HOME}/config/config.xml
+        fi
     fi
     sudo chown -R $username:$groupname $DOMAIN_PATH
     runuser -l oracle -c ". $ORACLE_HOME/oracle_common/common/bin/setWlstEnv.sh; java weblogic.WLST $DOMAIN_PATH/start-server.py"
