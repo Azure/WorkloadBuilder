@@ -260,8 +260,6 @@ function setupOracleBinaryAndDomain() {
     sudo runuser -l oracle -c "${cmd}"
     sudo chown -R $username:$groupname $ORACLE_INSTALL_PATH
     sudo unzip ${TMP_FILE_DIR}/${TARGET_DOMAIN_FILE_NAME} -d $(dirname "${DOMAIN_HOME}")
-    # make config.xml since it's packed
-    sudo mv ${DOMAIN_HOME}/config/config_bootstrap.xml ${DOMAIN_HOME}/config/config.xml
     sudo chown -R $username:$groupname $DOMAIN_HOME
 }
 
