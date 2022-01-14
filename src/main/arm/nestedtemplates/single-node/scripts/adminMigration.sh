@@ -30,8 +30,6 @@ export startWebLogicScript="${DOMAIN_HOME}/startWebLogic.sh"
 export stopWebLogicScript="${DOMAIN_HOME}/bin/customStopWebLogic.sh"
 export adminWlstURL="t3://$wlsAdminURL"
 
-echo $@
-
 function echo_stderr() {
     echo "$@" >&2
 }
