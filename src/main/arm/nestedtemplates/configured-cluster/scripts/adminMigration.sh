@@ -29,8 +29,6 @@ export CHECK_URL="http://$wlsAdminURL/weblogic/ready"
 export startWebLogicScript="${DOMAIN_HOME}/startWebLogic.sh"
 export stopWebLogicScript="${DOMAIN_HOME}/bin/customStopWebLogic.sh"
 
-echo $@
-
 function echo_stderr() {
     echo "$@" >&2
 }

@@ -128,7 +128,7 @@
     "resources": [
         {
             "apiVersion": "2019-10-01",
-            "name": "create-target-environment-and-lift-shift-start",
+            "name": "create-target-cluster-environment-and-lift-shift-start",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -386,7 +386,7 @@
         {
             "type": "Microsoft.Resources/deploymentScripts",
             "apiVersion": "2020-10-01",
-            "name": "deploymentscripttest",
+            "name": "clusterdeploymentscript",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Compute/virtualMachines/',variables('const_adminVMName'))]",
@@ -412,7 +412,7 @@
             "name": "create-target-environment-and-lift-shift-end",
             "type": "Microsoft.Resources/deployments",
             "dependsOn": [
-                "deploymentscripttest"
+                "clusterdeploymentscript"
             ],
             "properties": {
                 "mode": "Incremental",
